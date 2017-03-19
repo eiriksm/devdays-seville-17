@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Object oriented code. So fancy. What's the point?</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/drupaldevdays.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="css/images/cover.png">
+					<h1>Object oriented code. So fancy. What's the point?</h1>
+					<p>
+						<small><a href="#">Eirik S. Morland / @orkj / eiriksm</a></small>
+					</p>
+				</section>
+
+        <section data-markdown data-background="css/images/cover.png">
+       # About me
+
+       - Work at Ny Media (Trondheim, Norway)
+       - eiriksm on [drupal.org](https://www.drupal.org/u/eiriksm) / [github](https://github.com/eiriksm/)
+       - [@orkj at twitter](https://twitter.com/orkj)
+       - Beer nerd
+       - Fan of the image format GIF
+     </section>
+     <section data-markdown data-background="css/images/cover.png">
+       ## Prolific author of the wildly popular paradigm "display:none-driven-development"
+     </section>
+     <section class="has-dark-background section-slide" data-background="css/images/section.png" >
+       <img class="stretch" src="img/fix.png" />
+     </section>
+     <section class="has-dark-background section-slide" data-background="css/images/section.png" >
+       <img class="stretch" src="img/enable.png" />
+     </section>
+     <section data-background="img/display.gif">
+     </section>
+     <section data-markdown class="has-dark-background section-slide" data-background="css/images/section.png" >
+       # Object oriented programming
+       > Object-oriented programming (OOP) is a programming paradigm based on the concept of "objects" (...)
+
+       <small>Wikipedia</small>
+     </section>
+     <section data-background="img/oop.gif">
+     </section>
+     <section data-markdown data-background="css/images/cover.png">
+       ## What we will cover
+
+       - Very briefly: What is OOP in PHP?
+       - Why are we doing that in Drupal 8 now?
+       - Is it even better, though? Examples?
+     </section>
+     <section data-markdown data-background="css/images/cover.png">
+       ## Let's look at some examples of what OOP in PHP means.
+     </section>
+     <section class="has-dark-background section-slide" data-background="css/images/section.png" >
+       <pre><code>&lt;?php
+function print_hello_world() {
+  print "Hello world!";
+}
+print_hello_world(); // Prints "Hello world!"
+       </code></pre>
+     </section>
+     <section class="has-dark-background section-slide" data-background="css/images/section.png" >
+       <pre><code>&lt;?php
+namespace Long\String\With\Backslashes;
+
+class HelloWorldPrinterFactory implements HelloWorldPrinterFactoryInterface {
+ public function getHelloWorldPrinter() {
+   return new HelloWorldPrinter();
+ }
+}
+
+class HelloWorldPrinter implements PrinterInterface {
+ protected $hello = 'Hello';
+ protected $world = 'world!';
+
+ public function printHelloWorld(Another\String\With\Backslashes\PrintThings $thingPrinter) {
+   return $thingPrinter->printThing($this->getHello() . ' ' . $this->getWorld());
+ }
+ private function getHello() {
+   return $this->hello;
+ }
+ private function getWorld() {
+   return $this->world;
+ }
+}
+new HelloWorldPrinterFactory()
+->getHelloWorldPrinter()
+->printHelloWorld(new Another\String\With\Backslashes\PrintThings()); // Prints "Hello world!"
+       </code></pre>
+     </section>
+     <section data-markdown data-background="css/images/cover.png">
+       # At first sight.
+
+       ## That looks horrible.
+     </section>
+     <section data-background="img/yuck.gif">
+     </section>
+     <section class="has-dark-background section-slide" data-background="css/images/section.png" >
+       <h5>mymodule.module</h5>
+       <code><pre>
+ &lt;?php
+ function mymodule_block_info() {
+   return array(
+     'my_block' => array(
+       'info' => t('My block'),
+     ),
+   );
+ }
+ function mymodule_block_view($delta = '') {
+   $block = array();
+   switch ($delta) {
+     case 'my_block':
+       $block['subject'] = t('My block');
+       $block['content'] = t('This is some content.');
+       break;
+
+   }
+   return $block;
+ }
+       </code></pre>
+     </section>
+     <section class="has-dark-background section-slide" data-background="css/images/section.png" >
+       <h5>src/Plugin/Block/MyBlock.php</h5>
+       <code><pre>
+&lt;?php
+
+namespace Drupal\mymodule\Plugin\Block;
+
+use Drupal\Core\Block\BlockBase;
+
+/**
+ * @Block(
+ *   id = "my_block",
+ *   admin_label = @Translation("My block"),
+ * )
+ */
+class MyBlock extends BlockBase {
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    return array(
+      '#markup' => $this->t('This is some content.'),
+    );
+  }
+}
+    </code></pre>
+    </section>
+    <section data-markdown data-background="css/images/cover.png">
+      # At first sight.
+
+      ## That also looks horrible.
+    </section>
+    <section data-markdown class="has-dark-background section-slide" data-background="css/images/section.png" >
+      ### Some statements I read (citations omitted on purpose)
+
+      - (...) well established as a best practice
+      - Faster development thanks to re-use
+      - Encapsulation
+      - Easier to test
+      - Better, because... Dependency injection?
+      - Fewer bugs because... Objects?
+    </section>
+    <section data-background="img/risky.gif" data-markdown>
+      ## First statement
+
+      Well established as a best practice
+    </section>
+    <section data-markdown data-background="css/images/cover.png">
+      ### Which one of these is not from Drupal core, but from a Java program
+
+      - ExecutionContextFactory
+      - ReflectionFactory
+      - MemoryBackendFactory
+      - ServiceFactory
+    </section>
+    <section data-markdown data-background="css/images/cover.png">
+      ### Which one of these is not from Drupal core, but from a Java program
+
+      - ~~ExecutionContextFactory~~
+      - ~~ReflectionFactory~~
+      - ~~MemoryBackendFactory~~
+      - ServiceFactory
+    </section>
+    <section data-background="img/reusable.gif">
+      <div class="slide" data-markdown>
+      # Sorry. First statement
+
+      ## Faster development thanks to re-use
+      </div>
+    </section>
+    <section data-background="css/images/cover.png">
+      <div class="slide" data-markdown>
+        # Look at code, Eirik
+      </div>
+      <aside class="notes">
+        Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+      </aside>
+    </section>
+    <section data-markdown data-background="img/encap.gif">
+      # Second statement
+
+      ## Encapsulation
+    </section>
+    <section data-background="css/images/cover.png">
+      <div class="slide" data-markdown>
+        # Look at code, Eirik
+      </div>
+      <aside class="notes">
+        Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+      </aside>
+    </section>
+    <section data-markdown data-background="img/test.gif">
+      # Third statement
+
+      Easier to test
+    </section>
+    <section>
+      <pre><code>&lt;?php
+function user_adder_add_numbers($num_a, $num_b) {
+  return $num_a + $num_b;
+}
+assert(user_adder_add_numbers(1, 2) === 3);
+    </code></pre>
+    </section>
+    <section>
+    <pre><code>&lt;?php
+class Adder {
+  public function addNumbers($a, $b) {
+    return $a + $b;
+  }
+}
+$a = new Adder();
+assert($a->addNumbers(1, 2) === 3);
+    </code></pre>
+    </section>
+    <section data-background="css/images/cover.png">
+      <div class="slide" data-markdown>
+        # Look at code, Eirik
+      </div>
+      <aside class="notes">
+        Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+      </aside>
+    </section>
+    <section data-markdown data-background="img/di.gif">
+      # Depedency injection
+    </section>
+    <section data-background="css/images/cover.png">
+      <div class="slide" data-markdown>
+        # Look at code, Eirik
+      </div>
+      <aside class="notes">
+        Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+      </aside>
+    </section>
+    <section data-background="img/object.gif" data-markdown>
+      # Fewer bugs because... Objects?
+    </section>
+    <section>
+      <pre><code>&lt;?php
+public function handleSomeThing(NodeInterface $node) {
+  $node->getType(); // Always exists!
+}
+      </code></pre>
+    </section>
+    <section data-background="css/images/cover.png">
+      <div class="slide" data-markdown>
+        # Look at code, Eirik
+      </div>
+      <aside class="notes">
+        Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+      </aside>
+    </section>
+    <section data-background="img/conclusion.gif" data-markdown>
+      # Trying to sum it up.
+    </section>
+    <section data-markdown>
+      ## Summary
+
+      - Might look (one or more of) the following things: scary, hard, ugly and like a lot of work.
+      - May or may not be your taste.
+      - Might give you some benefits.
+      - Benefits are more obvious when using an IDE.
+    </section>
+
+				<!-- Please consider keeping this slide since DrupalDevDays is possible thanks to sponsors. -->
+				<section data-background="css/images/base.png">
+					<h2>THANKS!</h2>
+					<img data-src="css/images/sponsors.png">
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
