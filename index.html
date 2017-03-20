@@ -8,6 +8,11 @@
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/drupaldevdays.css">
+    <style>
+      .dark  a {
+        color: #fff;
+      }
+    </style>
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -50,6 +55,10 @@
        <img class="stretch" src="img/enable.png" />
      </section>
      <section data-background="img/display.gif">
+       <aside class="notes" data-markdown>
+         - Why talk about it?
+         - Establish authority
+       </aside>
      </section>
      <section data-markdown class="has-dark-background section-slide" data-background="css/images/section.png" >
        # Object oriented programming
@@ -237,7 +246,7 @@ class MyBlock extends BlockBase {
 
       Easier to test
     </section>
-    <section>
+    <section class="has-dark-background section-slide" data-background="css/images/section.png" >
       <pre><code>&lt;?php
 function user_adder_add_numbers($num_a, $num_b) {
   return $num_a + $num_b;
@@ -245,7 +254,7 @@ function user_adder_add_numbers($num_a, $num_b) {
 assert(user_adder_add_numbers(1, 2) === 3);
     </code></pre>
     </section>
-    <section>
+    <section class="has-dark-background section-slide" data-background="css/images/section.png" >
     <pre><code>&lt;?php
 class Adder {
   public function addNumbers($a, $b) {
@@ -271,7 +280,7 @@ assert($a->addNumbers(1, 2) === 3);
       <div class="slide" data-markdown>
         # Look at code, Eirik
       </div>
-      <aside class="notes">
+      <aside class="notes" data-markdown>
         - inject global user (d7)
         - Look at userLoginBlock
         - Look at that notifier
@@ -280,7 +289,7 @@ assert($a->addNumbers(1, 2) === 3);
     <section data-background="img/object.gif" data-markdown>
       # Fewer bugs because... Objects?
     </section>
-    <section>
+    <section class="has-dark-background section-slide" data-background="css/images/section.png" >
       <pre><code>&lt;?php
 public function handleSomeThing(NodeInterface $node) {
   $node->getType(); // Always exists!
@@ -291,7 +300,7 @@ public function handleSomeThing(NodeInterface $node) {
       <div class="slide" data-markdown>
         # Look at code, Eirik
       </div>
-      <aside class="notes">
+      <aside class="notes" data-markdown>
         - Type hint user
         - Nodeinterface user
         - gettypo
@@ -301,13 +310,21 @@ public function handleSomeThing(NodeInterface $node) {
     <section data-background="img/conclusion.gif" data-markdown>
       # Trying to sum it up.
     </section>
-    <section data-markdown>
+    <section data-markdown data-background="css/images/base.png">
       ## Summary
 
       - Might look (one or more of) the following things: scary, hard, ugly and like a lot of work.
       - May or may not be your taste.
       - Might give you some benefits.
       - Benefits are more obvious when using an IDE.
+    </section>
+    <section data-markdown class="has-dark-background dark section-slide" data-background="img/thanks.gif">
+      # Thanks!
+
+      ## Questions?
+
+      - [eiriksm.github.io/devdays-seville-17](https://eiriksm.github.io/devdays-seville-17)
+      - [@orkj](http://twitter.com/orkj)
     </section>
 
 				<!-- Please consider keeping this slide since DrupalDevDays is possible thanks to sponsors. -->
