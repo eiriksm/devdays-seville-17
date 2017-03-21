@@ -9,6 +9,9 @@
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/drupaldevdays.css">
     <style>
+      .dark h1,
+      .dark h2,
+      .dark,
       .dark  a {
         color: #fff;
       }
@@ -188,7 +191,7 @@ class MyBlock extends BlockBase {
       - Better, because... Dependency injection?
       - Fewer bugs because... Objects?
     </section>
-    <section data-background="img/risky.gif" data-markdown>
+    <section data-background="img/risky.gif" data-markdown class="has-dark-background dark">
       ## First statement
 
       Well established as a best practice
@@ -241,7 +244,7 @@ class MyBlock extends BlockBase {
         - Drupal 8 global user, $uid, getAccount uid, setInitialAccountId, setAccount
       </aside>
     </section>
-    <section data-markdown data-background="img/test.gif">
+    <section data-markdown data-background="img/test.gif" class="dark">
       # Third statement
 
       Easier to test
@@ -273,8 +276,8 @@ assert($a->addNumbers(1, 2) === 3);
         - DenyNodePreview
       </aside>
     </section>
-    <section data-markdown data-background="img/di.gif">
-      # Depedency injection
+    <section data-markdown data-background="img/di.gif" class="dark">
+      # Dependency injection
     </section>
     <section data-background="css/images/cover.png">
       <div class="slide" data-markdown>
@@ -307,7 +310,7 @@ public function handleSomeThing(NodeInterface $node) {
         - refacactor logger
       </aside>
     </section>
-    <section data-background="img/conclusion.gif" data-markdown>
+    <section data-background="img/conclusion.gif" data-markdown class="dark">
       # Trying to sum it up.
     </section>
     <section data-markdown data-background="css/images/base.png">
